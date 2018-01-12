@@ -1,34 +1,52 @@
 var app = angular.module('basicApp', []);
 app.controller('homeController', function ($scope, $http) {
-   $scope.AccountNumber = "";
-   $scope.PaymentReference = "";
-   $scope.PaymentDate = "";
-   $scope.PaymentAmount = "";
-   $scope.status = "";
+   //form fields
+   $scope.AccountNumber = "1";
+   $scope.PaymentReference = "2";
+   $scope.PaymentDate = "3";
+   $scope.PaymentAmount = "4";
    
+   $scope.status = ""; //display status of whether payment is successful
    
+   //button click
    $scope.submit = function() {
-	 $scope.status = "";
-	 var data = $.param({
-                accountNumber: $scope.accountNumber,
-                paymentReference: $scope.paymentReference,
-				paymentDate: $scope.paymentDate,
-				paymentAmount: $scope.paymentAmount
+		$scope.status = "";
+		 /*var data = $.param({
+	                accountNumber: $scope.AccountNumber,
+	                paymentReference: $scope.PaymentReference,
+					paymentDate: $scope.PaymentDate,
+					paymentAmount: $scope.PaymentAmount
 
-     });
+	     });
+		*/
+		
+		//var data = "test";
+		var myObj = { accountNumber: $scope.AccountNumber,
+	                  paymentReference: $scope.PaymentReference,
+					  paymentDate: $scope.PaymentDate,
+					  paymentAmount: $scope.PaymentAmount };
+		var data = JSON.stringify(myObj);
 
-	 $http.post('http://localhost:3001', data, config)
-	   .then(
-		   function(response){
-			 // success callback
-			 $scope.status = "Successfully paid";
-		   }, 
-		   function(response){
-			 // failure callback
-			 $scope.status = "fail to pay.";
-		   }
-		);  
-   }
+
+		var config = {
+	        headers : {
+	             'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+	        }
+	    }
+
+		 $http.post('http://localhost:3001', myObj)
+		   .then(
+			   function(response){
+				 // success callback
+				 console.log(data);
+				 $scope.status = "Successfully paid";
+			   }, 
+			   function(response){
+				 // failure callback
+				 $scope.status = "fail to pay.";
+			   }
+			);  
+	   }
    
    
 });
