@@ -30,6 +30,9 @@ app.get('/core.js', function(req, res) {
 	res.sendfile('core.js'); 
 });
 
+//mysql9
+
+
 
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
