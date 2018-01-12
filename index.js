@@ -1,5 +1,24 @@
 const express = require('express')
 const app = express()
+var mysql = require('mysql');
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
+
+
+//connect mysql
+var connection = mysql.createConnection({
+  host     : 'example.org',
+  user     : 'bob',
+  password : 'secret',
+});
+
+connection.connect(function(err) {
+  // connected! (unless `err` is set)
+});
 
 // Add headers
 app.use(function (req, res, next) {
@@ -30,7 +49,16 @@ app.get('/core.js', function(req, res) {
 	res.sendfile('core.js'); 
 });
 
-//mysql9
+//mysql
+app.post('/api/mysql', function(req, res) {
+	console.log("mysql called");
+	try{req.body = JSON.parse(Object.keys(req.body)[0])}catch(err){req.body = req.body}
+	var query = connection.query('INSERT INTO posts SET ?', req.body, function(err, result) {
+	  // Neat!
+	});
+	console.log(query.sql); // INSERT INTO posts SET `id` = 1, `title` = 'Hello MySQL'
+	
+});
 
 
 

@@ -3,8 +3,8 @@ app.controller('homeController', function ($scope, $http) {
    //form fields
    $scope.AccountNumber = "a11235";
    $scope.PaymentReference = "x2b2v";
-   $scope.PaymentDate = "2018-01-12";
-   $scope.PaymentAmount = "10";
+   $scope.PaymentDate = new Date();
+   $scope.PaymentAmount = 10;
    
    $scope.status = ""; //display status of whether payment is successful
    
@@ -23,6 +23,21 @@ app.controller('homeController', function ($scope, $http) {
 	             'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
 	        }
 	    }
+		
+		//save to mysqsl
+		$http.post('api/mysql', myObj)
+		   .then(
+			   function(response){
+				 // success callback
+				 console.log(response);
+				
+			   }, 
+			   function(response){
+				 // failure callback
+				 console.log(response);
+			   }
+			);  
+		
 		
 		//post to second node.js application hosted on port 3001
 		 $http.post('http://localhost:3001', myObj)
